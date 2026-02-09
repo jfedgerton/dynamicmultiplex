@@ -1,6 +1,6 @@
-# bayesnet
+# dynamic_multiplex
 
-`bayesnet` is being repurposed into an R package for multiplex community modeling with customizable interlayer ties.
+`dynamic_multiplex` is an R package for multiplex community modeling with customizable interlayer ties.
 
 ## Why this package
 
@@ -33,7 +33,7 @@ remotes::install_local(".")
 ## Quick example
 
 ```r
-library(bayesnet)
+library(dynamic_multiplex)
 
 sim <- simulate_and_fit_multilayer(
   directed = TRUE,

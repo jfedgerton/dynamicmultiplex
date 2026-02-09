@@ -1,15 +1,11 @@
-Package: bayesnet
-Title: Two-stage ERGM models for evaluating inter- and intra-group tie formation
+Package: dynamic_multiplex
+Title: Community detection for identifying communities in evolving networked systems
 Version: 0.0.0.9000
 Authors@R: 
     person(given = "Jared",
            family = "Edgerton",
            role = c("aut", "cre"),
            email = "jared.edgerton@gmail.com")
-    person(given = "Ryan",
-           family = "Dawe",
-           role = c("aut", "cre"),
-           email = "dawer135@gmail.com")
 Description: Tools for multilayer network modeling, including Louvain/Leiden community detection across layers and flexible interlayer tie construction using Jaccard, overlap, or node-identity rules.
 License: What license it uses
 Encoding: UTF-8
