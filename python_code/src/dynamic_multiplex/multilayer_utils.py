@@ -181,3 +181,38 @@ def community_overlap_edges(
                     )
 
     return pd.DataFrame(rows)
+
+
+def add_community_self_loops(
+    edge_df: pd.DataFrame,
+    fit: list[LayerCommunityFit],
+    layer_links: pd.DataFrame,
+    self_loop_multiplier: float = 1.0,
+    min_similarity: float = 0.0,
+) -> pd.DataFrame:
+    rows: list[dict] = []
+
+    for _, row in layer_links.iterrows():
+        layer_idx = int(row["from"])
+        layer_weight = float(row["weight"])
+        comms = fit[layer_idx - 1].communities
+
+        for comm_idx in comms.keys():
+            weighted_sim = 1.0 * layer_weight * self_loop_multiplier
+            if weighted_sim >= min_similarity:
+                rows.append(
+                    {
+                        "from_layer": layer_idx,
+                        "to_layer": layer_idx,
+                        "from_community": int(comm_idx),
+                        "to_community": int(comm_idx),
+                        "similarity": 1.0,
+                        "layer_weight": layer_weight,
+                        "weighted_similarity": weighted_sim,
+                    }
+                )
+
+    if not rows:
+        return edge_df
+
+    return pd.concat([edge_df, pd.DataFrame(rows)], ignore_index=True)

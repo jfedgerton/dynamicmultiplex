@@ -3,6 +3,7 @@ import numpy as np
 from dynamic_multiplex import (
     fit_multilayer_identity_ties,
     fit_multilayer_jaccard,
+    fit_multilayer_overlap,
     simulate_and_fit_multilayer,
 )
 
@@ -35,3 +36,24 @@ def test_custom_layer_links_are_respected():
     assert links.shape[0] == 1
     assert int(links.iloc[0]["from"]) == 1
     assert int(links.iloc[0]["to"]) == 3
+
+
+def test_jaccard_self_loops_default_to_layer_weight():
+    layers = [np.eye(6), np.eye(6), np.eye(6)]
+    out = fit_multilayer_jaccard(layers, algorithm="louvain")
+    ties = out["interlayer_ties"]
+    loops = ties[(ties["from_layer"] == ties["to_layer"]) & (ties["from_community"] == ties["to_community"])]
+
+    assert not loops.empty
+    assert (loops["similarity"] == 1.0).all()
+    assert (loops["weighted_similarity"] == loops["layer_weight"]).all()
+
+
+def test_overlap_self_loop_multiplier_scales_weights():
+    layers = [np.eye(6), np.eye(6), np.eye(6)]
+    out = fit_multilayer_overlap(layers, algorithm="louvain", self_loop_multiplier=2.0)
+    ties = out["interlayer_ties"]
+    loops = ties[(ties["from_layer"] == ties["to_layer"]) & (ties["from_community"] == ties["to_community"])]
+
+    assert not loops.empty
+    assert (loops["weighted_similarity"] == 2.0 * loops["layer_weight"]).all()
