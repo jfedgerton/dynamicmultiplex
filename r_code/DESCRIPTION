@@ -15,7 +15,11 @@ Depends:
 Imports: 
     igraph
 Suggests:
-    testthat (>= 3.0.0)
+    testthat (>= 3.0.0),
+    ggplot2,
+    gganimate,
+    ggalluvial,
+    RColorBrewer
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.2
 Config/testthat/edition: 3
